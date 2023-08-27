@@ -58,36 +58,41 @@ int main()
                 window.close();
         }
 
-        // generate random point
-        // note that rand() is considered problematic, but for this toy case its fine
-        // offset so its between -r, r
-        float x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX / SCREEN_SIZE) - SCREEN_SIZE/2;
-        float y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX / SCREEN_SIZE) - SCREEN_SIZE/2;
+        // encapsulate in loop to many points before drawing to screen
+        for (int i = 0; i < 1000; i++) {
+            // generate random point
+            // note that rand() is considered problematic, but for this toy case its fine
+            // offset so its between -r, r
+            float x = static_cast <float> (rand()) / static_cast <float> (RAND_MAX / SCREEN_SIZE) - SCREEN_SIZE/2;
+            float y = static_cast <float> (rand()) / static_cast <float> (RAND_MAX / SCREEN_SIZE) - SCREEN_SIZE/2;
 
-        // set origin
-        dot.setOrigin(sf::Vector2f(-SCREEN_SIZE/2 - THICKNESS - x, -SCREEN_SIZE/2 - THICKNESS - y));
+            // set origin
+            dot.setOrigin(sf::Vector2f(-SCREEN_SIZE/2 - THICKNESS - x, -SCREEN_SIZE/2 - THICKNESS - y));
 
-        // get squared distance from point to center
-        float d = x * x + y * y;
-        // compare to squared radius of circle
-        if (d <= SCREEN_SIZE * SCREEN_SIZE / 4) {
-            // set fill
-            dot.setFillColor(sf::Color::Green);
+            // get squared distance from point to center
+            float d = x * x + y * y;
+            // compare to squared radius of circle
+            if (d <= SCREEN_SIZE * SCREEN_SIZE / 4) {
+                // set fill
+                dot.setFillColor(sf::Color(0, 255, 0, 100));
 
-            // update count
-            circleDots++;
-            totalDots++;
-        } else {
-            // set fill
-            dot.setFillColor(sf::Color::Blue);
+                // update count
+                circleDots++;
+                totalDots++;
+            } else {
+                // set fill
+                dot.setFillColor(sf::Color(0, 0, 255, 100));
 
-            // update count
-            totalDots++;
+                // update count
+                totalDots++;
+            }
+
+            // update texture to include new dot
+            bgTex.draw(dot);
+            bgTex.display();
         }
 
-        // update sprite to include new dot
-        bgTex.draw(dot);
-        bgTex.display();
+        // update sprite
         sf::Sprite sprites(bgTex.getTexture());
 
         // draw
